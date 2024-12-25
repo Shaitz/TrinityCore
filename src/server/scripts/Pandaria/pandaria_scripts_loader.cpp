@@ -19,10 +19,18 @@
 void AddSC_zone_the_jade_forest();
 void AddSC_zone_the_wandering_isle();
 
+// Temple of the Jade Serpent
+void AddSC_instance_temple_of_the_jade_serpent();
+void AddSC_boss_wise_mari();
+
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
 void AddPandariaScripts()
 {
     AddSC_zone_the_jade_forest();
     AddSC_zone_the_wandering_isle();
+
+    // Temple of the Jade Serpent
+    AddSC_instance_temple_of_the_jade_serpent();
+    AddSC_boss_wise_mari();
 }
