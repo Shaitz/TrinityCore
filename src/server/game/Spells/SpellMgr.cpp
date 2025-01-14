@@ -16,15 +16,15 @@
  */
 
 #include "SpellMgr.h"
+#include "BattlePetMgr.h"
 #include "BattlefieldMgr.h"
 #include "BattlegroundMgr.h"
-#include "BattlePetMgr.h"
 #include "Chat.h"
-#include "Containers.h"
 #include "DB2Stores.h"
 #include "DatabaseEnv.h"
 #include "LanguageMgr.h"
 #include "Log.h"
+#include "MapUtils.h"
 #include "MotionMaster.h"
 #include "ObjectMgr.h"
 #include "Player.h"
@@ -34,10 +34,10 @@
 #include "SpellInfo.h"
 #include "StringConvert.h"
 #include <G3D/g3dmath.h>
-#include <boost/multi_index_container.hpp>
 #include <boost/multi_index/composite_key.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/multi_index_container.hpp>
 
 namespace
 {
@@ -3877,6 +3877,16 @@ void SpellMgr::LoadSpellInfoCorrections()
         {
             spellEffectInfo->TargetARadiusEntry = sSpellRadiusStore.LookupEntry(EFFECT_RADIUS_200_YARDS);
             spellEffectInfo->TargetA = SpellImplicitTargetInfo(TARGET_UNIT_SRC_AREA_ENTRY);
+        });
+    });
+
+    // Maelstrom Weapon
+    ApplySpellFix({ 187881 }, [](SpellInfo* spellInfo)
+    {
+        ApplySpellEffectFix(spellInfo, EFFECT_1, [](SpellEffectInfo* spellEffectInfo)
+        {
+            // Add Lava Burst to spells that benefit from it
+            spellEffectInfo->SpellClassMask[1] |= 0x1000;
         });
     });
 
