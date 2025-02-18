@@ -15,26 +15,25 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// This is where scripts loading function should be declared:
-void AddSC_zone_the_jade_forest();
-void AddSC_zone_the_wandering_isle();
+#include "ScriptMgr.h"
+#include "temple_of_the_jade_serpent.h"
 
-// Temple of the Jade Serpent
-void AddSC_instance_temple_of_the_jade_serpent();
-void AddSC_boss_wise_mari();
-void AddSC_boss_liu_flameheart();
-void AddSC_boss_sha_of_doubt();
-
-// The name of this function should match:
-// void Add${NameOfDirectory}Scripts()
-void AddPandariaScripts()
+struct boss_liu_flameheart : public BossAI
 {
-    AddSC_zone_the_jade_forest();
-    AddSC_zone_the_wandering_isle();
+    boss_liu_flameheart(Creature* creature) : BossAI(creature, DATA_LIU_FLAMEHEART) { };
 
-    // Temple of the Jade Serpent
-    AddSC_instance_temple_of_the_jade_serpent();
-    AddSC_boss_wise_mari();
-    AddSC_boss_liu_flameheart();
-    AddSC_boss_sha_of_doubt();
+    void JustDied(Unit* /*killer*/) override
+    {
+        _JustDied();
+    }
+
+    void JustEngagedWith(Unit* who)
+    {
+        BossAI::JustEngagedWith(who);
+    }
+};
+
+void AddSC_boss_liu_flameheart()
+{
+    RegisterTempleOfTheJadeSerpentCreatureAI(boss_liu_flameheart);
 }

@@ -207,15 +207,30 @@ struct boss_wise_mari : public BossAI
 // 106062
 class spell_water_bubble : public AuraScript
 {
+    bool Validate(SpellInfo const* /*spellInfo*/) override
+    {
+        return ValidateSpellInfo({ SPELL_WATER_BUBBLE2 });
+    }
+
     void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         if (Aura* aura = GetCaster()->GetAura(SPELL_WATER_BUBBLE))
             aura->SetStackAmount(4);
     }
 
+    void HandlePeriodic(AuraEffect const* /*aurEff*/)
+    {
+        PreventDefaultAction();
+
+        if (Unit* caster = GetCaster())
+            if (!GetTarget()->IsFalling())
+                caster->CastSpell(GetTarget(), SPELL_WATER_BUBBLE2, true);
+    }
+
     void Register() override
     {
         AfterEffectApply += AuraEffectApplyFn(spell_water_bubble::OnApply, EFFECT_1, SPELL_AURA_MOD_DAMAGE_PERCENT_TAKEN, AURA_EFFECT_HANDLE_REAL);
+        OnEffectPeriodic += AuraEffectPeriodicFn(spell_water_bubble::HandlePeriodic, EFFECT_0, SPELL_AURA_PERIODIC_TRIGGER_SPELL);
     }
 };
 
@@ -237,7 +252,7 @@ class spell_wash_away_aura : public AuraScript
             for (Map::PlayerList::const_iterator itr = players.begin(); itr != players.end(); ++itr)
             {
                 if (Player* player = itr->GetSource())
-                    if (caster->isInFront(player, M_PI / 4))
+                    if (caster->isInFront(player, M_PI / 4) && !player->IsFalling())
                         caster->CastSpell(player, SPELL_WASH_AWAY_TRIGGERED, true);
             }
         }
@@ -282,7 +297,7 @@ struct npc_corrupt_living_water : public ScriptedAI
         DoCastSelf(SPELL_SUMMON_CORRUPT_DROPLET);
     }
 
-    void UpdateAI(uint32 diff)
+    void UpdateAI(uint32 diff) override
     {
         if (!UpdateVictim())
             return;

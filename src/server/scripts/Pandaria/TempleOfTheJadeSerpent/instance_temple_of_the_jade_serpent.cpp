@@ -41,7 +41,7 @@ DoorData const doorData[] =
     { GO_WATERY_DOOR,                   DATA_WISE_MARI,             EncounterDoorBehavior::OpenWhenNotInProgress },
     { GO_FOUNTAIN_OF_EVERSEEING_EXIT,   DATA_WISE_MARI,             EncounterDoorBehavior::OpenWhenDone },
     { GO_SCROLLKEEPERS_SANCTUM_EXIT,    DATA_LOREWALKER_STONESTEP,  EncounterDoorBehavior::OpenWhenDone },
-    { GO_DOOR_TO_COURTYARD,             DATA_LIU_FLAMEHEART,        EncounterDoorBehavior::OpenWhenDone },
+    { GO_DOOR_TO_COURTYARD,             DATA_SHA_OF_DOUBT,          EncounterDoorBehavior::OpenWhenDone },
     { GO_DOOR_TO_SHA_OF_DOUBT,          DATA_LIU_FLAMEHEART,        EncounterDoorBehavior::OpenWhenDone }
 };
 // wowtools encounters
